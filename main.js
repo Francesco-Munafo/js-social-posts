@@ -57,6 +57,8 @@ const posts = [
 ];
 
 
+
+
 /* 
 Descrizione
 Ricreiamo un feed social aggiungendo al layout dello starter kit di base fornito, il nostro script JS in cui:
@@ -120,9 +122,15 @@ Prendendo come riferimento il layout di esempio presente nell'html, stampiamo i 
 
 */
 
-
+/**
+ * ## PostGen
+ * This function generates HTML pre-given markup changing values using the array ones
+ * @param {array} array  Object's array
+ */
 function postGen(array) {
     const postContainer = document.getElementById('container');
+    
+
 
     for (let i = 0; i < array.length; i++) {
 
@@ -146,7 +154,7 @@ function postGen(array) {
                 <div class="post__footer">
                     <div class="likes js-likes">
                         <div class="likes__cta">
-                            <a class="like-button  js-like-button" href="#" data-postid="${array[i].id}">
+                            <a class="like-button  js-like-button" href="javascript:;" data-postid="${array[i].id}">
                                 <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                                 <span class="like-button__label">Mi Piace</span>
                             </a>
@@ -171,23 +179,72 @@ Milestone 3
 Se clicchiamo sul tasto "Mi Piace" cambiamo il colore al testo del bottone e incrementiamo il counter dei likes relativo. Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like.
 
 */
+//Creo un array con gli elementi id e likes di posts
 
+const submittedLikes = posts.map(post => {
 
-let liked = false
-const likeButton = document.querySelector('.like-button'); //Per prova seleziono solo 1 pulsante
-console.log(likeButton);
-likeButton.addEventListener('click', function (ev) { //Al click del pulsante devi aumentare il parametro passato alla funzione (posts.like)
-    ev.preventDefault();
-    posts[0].likes++
-    console.log(posts[0].likes);
-    posts[0].liked = true;
-    console.log(posts[0]);
-    
-    if (posts[0].liked == true){
-        likeButton.classList.add('text-primary');
-        postGen(posts);
-    }
+    return { id: post.id, likes: post.likes };
+
 });
+
+console.log(submittedLikes);
+
+const likeButton = document.querySelectorAll(".like-button");
+const likesCounter = document.querySelectorAll(".js-likes-counter");
+
+for (let i = 0; i < submittedLikes.length; i++) {
+    submittedLikes[i].btn = likeButton[i];
+    submittedLikes[i].counter = likesCounter[i];
+}
+
+const likedPosts = [];
+
+submittedLikes.forEach(post => {
+    
+    let i = 0;
+    const button = post.btn;
+    let likes = post.likes;
+    const id = post.id;
+    const counter = post.counter;
+    // console.log(post);
+    let liked = false;
+    button.addEventListener('click', function () {
+        button.classList.toggle("text-primary");
+
+        if (liked) {
+            likes--;
+            counter.innerHTML = likes;
+            liked = false;
+        } else {
+            likes++;
+            counter.innerHTML = likes;
+            (likedPosts.includes(id) ? "" : likedPosts.push(id));
+            liked = true;
+        }
+
+    })
+
+    i++;
+})
+
+/* #####################################
+
+                  BONUS
+
+####################################### */
+
+
+
+
+// const date = posts.map((post => {
+    
+// })
+
+// console.log(date);
+
+
+
+
 
 
 
