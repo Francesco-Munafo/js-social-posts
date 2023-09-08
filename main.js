@@ -123,9 +123,9 @@ Prendendo come riferimento il layout di esempio presente nell'html, stampiamo i 
 
 function postGen(array) {
     const postContainer = document.getElementById('container');
-    
+
     for (let i = 0; i < array.length; i++) {
-    
+
         const postMarkup = `
         <div class="post">
                 <div class="post__header">
@@ -158,12 +158,12 @@ function postGen(array) {
                 </div>            
             </div>
         `
-        postContainer.innerHTML += postMarkup
-    
+        postContainer.innerHTML += postMarkup;
+
     }
 }
 
-postGen(posts)
+postGen(posts);
 
 /*
 
@@ -171,18 +171,24 @@ Milestone 3
 Se clicchiamo sul tasto "Mi Piace" cambiamo il colore al testo del bottone e incrementiamo il counter dei likes relativo. Salviamo in un secondo array gli id dei post ai quali abbiamo messo il like.
 
 */
-//Creo una funzione per l'aggiunta del like
-function addLike(likeCount) {
-const likeButton = document.querySelector('.like-button'); //
 
-likeButton.addEventListener('click', function () {
-    console.log(likeButton);
-    likeCount++
-    likeButton.classList.add('text-primary')
-})
+
+let liked = false
+const likeButton = document.querySelector('.like-button'); //Per prova seleziono solo 1 pulsante
+console.log(likeButton);
+likeButton.addEventListener('click', function (ev) { //Al click del pulsante devi aumentare il parametro passato alla funzione (posts.like)
+    ev.preventDefault();
+    posts[0].likes++
+    console.log(posts[0].likes);
+    posts[0].liked = true;
+    console.log(posts[0]);
     
-    postGen(posts)
-}
+    if (posts[0].liked == true){
+        likeButton.classList.add('text-primary');
+        postGen(posts);
+    }
+});
 
-addLike(posts.likes)
+
+
 
